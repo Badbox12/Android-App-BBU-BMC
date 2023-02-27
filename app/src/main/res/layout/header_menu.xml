@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="20dp"
+    android:background="@color/blue_500">
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/imgLoginPhoto"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:civ_border_width="3dp"
+        app:civ_border_color="#fff"
+        android:layout_marginTop="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/user_group_icon" />
+
+    <TextView
+        android:id="@+id/tvLoginName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Login Name"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgLoginPhoto" />
+
+    <TextView
+        android:id="@+id/tvLoginEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login Email"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvLoginName" />
+</androidx.constraintlayout.widget.ConstraintLayout>

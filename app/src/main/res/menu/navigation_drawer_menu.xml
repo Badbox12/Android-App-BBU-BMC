@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <group>
+        <item
+            android:id="@+id/mnMyOrders"
+            android:icon="@drawable/icon_shopping_cart_24"
+            android:title="My Orders" />
+        <item
+            android:id="@+id/mnProducts"
+            android:icon="@drawable/icon_product_72"
+            android:title="Products" />
+        <item
+            android:id="@+id/mnContacts"
+            android:icon="@drawable/icon_contact_72"
+            android:title="Contacts" />
+        <item
+            android:id="@+id/mnSales"
+            android:icon="@drawable/icon_product_72"
+            android:title="Sales" />
+    </group>
+    <item android:title="Social Network">
+        <menu>
+            <item
+                android:id="@+id/mnFacebook"
+                android:icon="@drawable/ic_baseline_share_24"
+                android:title="Facebook" />
+            <item
+                android:id="@+id/mnTwitter"
+                android:icon="@drawable/icon_twitter_24"
+                android:title="Twitter" />
+        </menu>
+    </item>
+
+    <item android:title="User Account">
+        <menu>
+            <item
+                android:id="@+id/mnEditProfile"
+                android:icon="@drawable/icon_contact_72"
+                android:title="Edit Profile" />
+            <item
+                android:id="@+id/mnChangePassword"
+                android:icon="@drawable/icon_contact_72"
+                android:title="Change your password" />
+            <item
+                android:id="@+id/mnLogout"
+                android:icon="@drawable/icon_contact_72"
+                android:title="Logout" />
+        </menu>
+    </item>
+</menu>
