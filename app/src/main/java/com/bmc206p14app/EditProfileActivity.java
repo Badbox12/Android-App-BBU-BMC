@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -80,5 +81,10 @@ public class EditProfileActivity extends AppCompatActivity {
         gal.setType("image/*");
         gal.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(gal, GALLERY);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
