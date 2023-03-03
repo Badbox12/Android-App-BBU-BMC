@@ -111,6 +111,18 @@ public class MainAppActivity extends AppCompatActivity implements NavigationView
                 Intent edit = new Intent(MainAppActivity.this, EditProfileActivity.class);
                 startActivity(edit);
                 break;
+            case R.id.mnChangePassword:
+                Intent pwd = new Intent(MainAppActivity.this, CheckPasswordActivity.class);
+                startActivity(pwd);
+                break;
+            case R.id.mnLogout:
+                // Clear user login sessions
+                sessions.ClearSessions();
+                // goto login
+                Intent logout = new Intent(MainAppActivity.this, LoginActivity.class);
+                startActivity(logout);
+                finishAffinity(); // finish this activity and other activity
+                break;
         }
         return true;
     }

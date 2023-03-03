@@ -21,7 +21,7 @@ import com.bmc206p14app.functions.Sessions;
 import com.google.android.material.textfield.TextInputEditText;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
-public class EditProfileActivity extends AppCompatActivity {
+public class EditProfileActivity extends AppCompatActivity implements View.OnClickListener {
     CircularImageView imgPhotoProfile;
     ImageButton imgBtnBrowsePhoto;
     Button btnSave;
@@ -30,6 +30,7 @@ public class EditProfileActivity extends AppCompatActivity {
     Bitmap bitmap;
     static final int GALLERY = 1;
     static final int CAMERA = 2;
+    boolean isChanged = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,36 +76,9 @@ public class EditProfileActivity extends AppCompatActivity {
         });
         //
         btnSave = findViewById(R.id.btnSaveEdit);
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String strfullname = txtFullName.getText().toString();
-                String strusername = txtUserName.getText().toString();
-                String stremail = txtUserEmail.getText().toString();
-                String strImage = ConvertImage.ImageToString(bitmap);
-                if(strfullname.isEmpty()){
-                    txtFullName.setError("Required Full Name!");
-                    txtFullName.requestFocus();
-                    return;
-                }
-                if(strusername.isEmpty()){
-                    txtUserName.setError("Required UserName!");
-                    txtUserName.requestFocus();
-                    return;
-                }
-                if(stremail.isEmpty()){
-                    txtUserEmail.setError("Required Email!");
-                    txtUserEmail.requestFocus();
-                    return;
-                }
-                String uri = getText(R.string.AppURL).toString() + "edit_user_profile.php";
-                String[] params = {"UserNameUpdate","FullNameUpdate","EmailUpdate","ImageUpdate","UserIdUpdate"};
-                String strId = String.valueOf(sessions.getUserID());
-                // create object of class RequestUpdate.java
-                RequestUpdate update = new RequestUpdate(EditProfileActivity.this, params);
-                update.execute(uri,strusername,strfullname,stremail,strImage,strId);
-            }
-        });
+        btnSave.setOnClickListener(this);
+
+
 
     }
 
@@ -129,6 +103,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 Uri uri = data.getData();
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
                 imgPhotoProfile.setImageBitmap(bitmap);
+                isChanged = true;
             }catch (Exception ex){
                 ex.printStackTrace();
             }
@@ -139,9 +114,40 @@ public class EditProfileActivity extends AppCompatActivity {
 
                 bitmap = (Bitmap) data.getExtras().get("data");
                 imgPhotoProfile.setImageBitmap(bitmap);
+                isChanged = true;
             }catch (Exception ex){
                 ex.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void onClick(View view) {
+        String strfullname = txtFullName.getText().toString();
+        String strusername = txtUserName.getText().toString();
+        String stremail = txtUserEmail.getText().toString();
+        String strImage = "NoChange";
+        if(isChanged == true) strImage = ConvertImage.ImageToString(bitmap);
+        if(strfullname.isEmpty()){
+            txtFullName.setError("Required Full Name!");
+            txtFullName.requestFocus();
+            return;
+        }
+        if(strusername.isEmpty()){
+            txtUserName.setError("Required UserName!");
+            txtUserName.requestFocus();
+            return;
+        }
+        if(stremail.isEmpty()){
+            txtUserEmail.setError("Required Email!");
+            txtUserEmail.requestFocus();
+            return;
+        }
+        String uri = getText(R.string.AppURL).toString() + "edit_user_profile.php";
+        String[] params = {"UserNameUpdate","FullNameUpdate","EmailUpdate","ImageUpdate","UserIdUpdate"};
+        String strId = String.valueOf(sessions.getUserID());
+        // create object of class RequestUpdate.java
+        RequestUpdate update = new RequestUpdate(EditProfileActivity.this, params);
+        update.execute(uri,strusername,strfullname,stremail,strImage,strId);
     }
 }

@@ -18,6 +18,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 public class RequestUpdate extends AsyncTask<String, Void,String> {
     private Context context;
@@ -63,7 +64,7 @@ public class RequestUpdate extends AsyncTask<String, Void,String> {
 
             // Open Connection for sending data
             OutputStream os = conn.getOutputStream();
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os , "UTF-8"));
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os , StandardCharsets.UTF_8));
             writer.write(query);
             writer.flush();
             writer.close();
@@ -93,11 +94,20 @@ public class RequestUpdate extends AsyncTask<String, Void,String> {
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
+        if(dialog.isShowing()){
+            dialog.dismiss();
+        }
         try {
             JSONObject object = new JSONObject(result);
             if(object.getInt("success")==1){
                 Toast.makeText(context,object.getString("msg_success"),
                         Toast.LENGTH_LONG).show();
+                // Update user info in session
+                Sessions sessions = new Sessions(context);
+                sessions.setUserName(object.getString("UserNameUpdate"));
+                sessions.setUserFullName(object.getString("FullNameUpdate"));
+                sessions.setUserImage(object.getString("UserImageUpdate"));
+                sessions.setUserEmail(object.getString("UserEmailUpdate"));
             }else{
                 Toast.makeText(context,object.getString("msg_errors"),
                         Toast.LENGTH_LONG).show();
@@ -105,9 +115,7 @@ public class RequestUpdate extends AsyncTask<String, Void,String> {
         }catch (JSONException e){
               e.printStackTrace();
         }
-        if(dialog.isShowing()){
-            dialog.dismiss();
-        }
+
 
     }
 }

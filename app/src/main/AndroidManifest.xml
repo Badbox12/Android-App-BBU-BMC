@@ -11,17 +11,27 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BMC206P14App"
         android:usesCleartextTraffic="true"
+        tools:ignore="Instantiatable"
         tools:targetApi="31">
         <activity
-            android:name=".EditProfileActivity"
-            android:label="Edit Profile"
+            android:name=".CheckPasswordActivity"
+            android:label="Current Password"
             android:parentActivityName=".MainAppActivity"
             android:exported="false" />
+        <activity
+            android:name=".ChangePasswordActivity"
+            android:label="New Password"
+            android:parentActivityName=".MainAppActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditProfileActivity"
+            android:exported="false"
+            android:label="Edit Profile"
+            android:parentActivityName=".MainAppActivity" />
         <activity
             android:name=".ContactDetailActivity"
             android:exported="false"

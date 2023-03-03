@@ -6,9 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.MalformedJsonException;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -27,13 +29,23 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
     private Sessions sessions;
+    public static final int CONNECTION_TIMEOUT = 10000;
+    public static final int READ_TIMEOUT = 15000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,34 +102,98 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... strings) {
-            try {
-                // creating HttpClient
-                HttpClient client = new DefaultHttpClient();
-                // creating HttPost
-                HttpPost post = new HttpPost(strings[0]);
-                // building post parameters
-                List<NameValuePair> params = new ArrayList<NameValuePair>();
-                params.add(new BasicNameValuePair("UserNameLogin", strings[1]));
-                params.add(new BasicNameValuePair("UserPasswordLogin", strings[2]));
-                // set URL Encoding data
-                post.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
-                // finally making HttpRequests
-                HttpResponse res = client.execute(post);
-                // write to log
-                Log.d("HttpResponse", res.toString());
-                // read data from server
-                is = res.getEntity().getContent();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-                StringBuffer result = new StringBuffer();
-                String line = "";
-                while ((line = reader.readLine()) != null){
-                    result.append(line + "\n");
+//            try {
+//                // creating HttpClient
+//                HttpClient client = new DefaultHttpClient();
+//                // creating HttPost
+//                HttpPost post = new HttpPost(strings[0]);
+//                // building post parameters
+//                List<NameValuePair> params = new ArrayList<NameValuePair>();
+//                params.add(new BasicNameValuePair("UserNameLogin", strings[1]));
+//                params.add(new BasicNameValuePair("UserPasswordLogin", strings[2]));
+//                // set URL Encoding data
+//                post.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
+//                // finally making HttpRequests
+//                HttpResponse res = client.execute(post);
+//                // write to log
+//                Log.d("HttpResponse", res.toString());
+//                // read data from server
+//                is = res.getEntity().getContent();
+//                BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+//                StringBuffer result = new StringBuffer();
+//                String line = "";
+//                while ((line = reader.readLine()) != null){
+//                    result.append(line + "\n");
+//                }
+//                return result.toString();  // pass value to onPostExecute()
+//
+//            }catch (Exception ex){
+//                    ex.printStackTrace();
+//                return null;
+//            }
+
+//                try{
+//                    url = new URL(Server.url);
+//                }catch (MalformedURLException e){
+//                    e.printStackTrace();
+//                    return "exception";
+//                }
+                try {
+                    /* Setup HttpURLConnection class to send recieve data
+                    * from php and mysql
+                    * */
+                    // creating URL
+                    URL url = new URL(strings[0]);
+                    // HttpURLConnection
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setReadTimeout(READ_TIMEOUT);
+                    conn.setConnectTimeout(CONNECTION_TIMEOUT);
+                    conn.setRequestMethod("POST");
+                    /*
+                    * setDoInput and setDoOutput method depict handling of both send and receive
+                    * */
+                    conn.setDoInput(true);
+                    conn.setDoInput(true);
+                    // Append parameter to URL
+                    Uri.Builder builder = new Uri.Builder()
+                            .appendQueryParameter("UserNameLogin",strings[1])
+                            .appendQueryParameter("UserPasswordLogin",strings[2]);
+                    String query = builder.build().getEncodedQuery();
+                    System.out.println("query = "+ query);
+                    // Open connection for sending data
+                    OutputStream os = conn.getOutputStream();
+                    BufferedWriter writer = new BufferedWriter(
+                            new OutputStreamWriter(os, "UTF-8")
+                    );
+                    writer.write(query);
+                    writer.flush();
+                    writer.close();
+                    os.close();
+                    conn.connect();
+
+//                    StringBuffer result = new StringBuffer();
+
+                    if(conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                        // Read data sent from server
+                        InputStream input = conn.getInputStream();
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+                        StringBuilder result = new StringBuilder();
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            result.append(line);
+                            result.append(line + "\n");
+                        }
+                        return result.toString();
+                    }else {
+                        return "unsuccessfully";
+                    }
+                }catch (IOException e1){
+                    e1.printStackTrace();
+                    return "exception";
+                }finally {
+
                 }
-                return result.toString();  // pass value to onPostExecute()
-            }catch (Exception ex){
-                    ex.printStackTrace();
-            }
-            return null;
+
 
         }
 
@@ -127,8 +203,11 @@ public class LoginActivity extends AppCompatActivity {
             if(dialog.isShowing()){
                 dialog.dismiss();
             }
+//            new AlertDialog.Builder(context).setMessage(result).show();
             try {
+
                 JSONObject object = new JSONObject(result);
+                Log.d("My App", object.toString());
                 if(object.getInt("success") == 1) {
                     // TODO: save user login info
                     sessions.setUserID(object.getInt("UserIDLogin"));
