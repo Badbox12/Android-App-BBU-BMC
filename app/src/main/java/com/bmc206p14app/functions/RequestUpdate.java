@@ -1,10 +1,15 @@
 package com.bmc206p14app.functions;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.widget.Toast;
+
+import com.bmc206p14app.MainAppActivity;
 
 import org.apache.http.HttpConnection;
 import org.json.JSONException;
@@ -108,7 +113,17 @@ public class RequestUpdate extends AsyncTask<String, Void,String> {
                 sessions.setUserFullName(object.getString("FullNameUpdate"));
                 sessions.setUserImage(object.getString("UserImageUpdate"));
                 sessions.setUserEmail(object.getString("UserEmailUpdate"));
-            }else{
+            }else if(object.getInt("success") == 2){
+                Toast.makeText(context,object.getString("msg_success"),
+                        Toast.LENGTH_LONG).show();
+                // Update user password in session
+                Sessions sessions = new Sessions(context);
+                sessions.setUserPassword(object.getString("UserPasswordUpdate"));
+
+                context.startActivity(new Intent(context, MainAppActivity.class));
+                ((Activity) context).finish();
+            }
+            else{
                 Toast.makeText(context,object.getString("msg_errors"),
                         Toast.LENGTH_LONG).show();
             }
