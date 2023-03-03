@@ -14,12 +14,15 @@ import android.widget.TextView;
 
 import com.bmc206p14app.adapters.ContactAdapter;
 import com.bmc206p14app.models.ContactItems;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ContactActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
     List<ContactItems> lstContact = new ArrayList<ContactItems>();
+    FloatingActionButton btnCreateContact;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +39,16 @@ public class ContactActivity extends AppCompatActivity implements AdapterView.On
         LV.setAdapter(adapter);
         LV.setOnItemClickListener(this);
         LV.setOnItemLongClickListener(this);
+
+        btnCreateContact = findViewById(R.id.btnAddNewContact);
+        btnCreateContact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(ContactActivity.this, CreateContactActivity.class);
+                startActivity(in);
+//                finish();
+            }
+        });
     }
 
     @Override

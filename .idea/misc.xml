@@ -3,9 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/PROJECT/Javaoop/BMC206P14App/app/src/main/res/drawable/ic_person_add_alt_1_24.xml" value="0.255" />
         <entry key="..\:/PROJECT/Javaoop/BMC206P14App/app/src/main/res/layout/activity_change_password.xml" value="0.3234375" />
         <entry key="..\:/PROJECT/Javaoop/BMC206P14App/app/src/main/res/layout/activity_check_password.xml" value="0.25" />
+        <entry key="..\:/PROJECT/Javaoop/BMC206P14App/app/src/main/res/layout/activity_create_contact.xml" value="0.35104166666666664" />
         <entry key="..\:/PROJECT/Javaoop/BMC206P14App/app/src/main/res/layout/activity_edit_profile.xml" value="0.25" />
+        <entry key="..\:/PROJECT/Javaoop/BMC206P14App/app/src/main/res/layout/contact_layout.xml" value="0.33" />
         <entry key="..\:/PROJECT/Javaoop/BMC206P14App/app/src/main/res/layout/login_layout.xml" value="0.25885416666666666" />
         <entry key="..\:/PROJECT/Javaoop/BMC206P14App/app/src/main/res/layout/sign_up_layout.xml" value="0.3234375" />
         <entry key="..\:/PROJECT/Javaoop/BMC206P14App/app/src/main/res/menu/navigation_drawer_menu.xml" value="0.3234375" />

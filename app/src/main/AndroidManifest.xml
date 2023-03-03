@@ -18,15 +18,20 @@
         tools:ignore="Instantiatable"
         tools:targetApi="31">
         <activity
-            android:name=".CheckPasswordActivity"
-            android:label="Current Password"
-            android:parentActivityName=".MainAppActivity"
+            android:name=".CreateContactActivity"
+            android:label="New Contact"
+            android:parentActivityName=".ContactActivity"
             android:exported="false" />
         <activity
+            android:name=".CheckPasswordActivity"
+            android:exported="false"
+            android:label="Current Password"
+            android:parentActivityName=".MainAppActivity" />
+        <activity
             android:name=".ChangePasswordActivity"
+            android:exported="false"
             android:label="New Password"
-            android:parentActivityName=".MainAppActivity"
-            android:exported="false" />
+            android:parentActivityName=".MainAppActivity" />
         <activity
             android:name=".EditProfileActivity"
             android:exported="false"

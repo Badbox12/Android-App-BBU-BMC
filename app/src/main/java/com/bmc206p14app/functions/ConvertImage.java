@@ -25,4 +25,10 @@ public class ConvertImage {
         byte[] img = byteArr.toByteArray();
         return Base64.encodeToString(img,Base64.DEFAULT);
     }
+    public  static byte[] ImageToByteArr(Bitmap image){
+        ByteArrayOutputStream byteArr = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG,100,byteArr);
+        byte[] img = byteArr.toByteArray();
+        return img;
+    }
 }
